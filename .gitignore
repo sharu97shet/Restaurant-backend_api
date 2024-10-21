@@ -1,0 +1,11 @@
+# Environments variables
+.env
+
+myenv/
+venv/
+React-auth
+db.sqlite3
+
+# Ignore compiled Python files
+*.pyc
+__pycache__
