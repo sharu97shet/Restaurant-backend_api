@@ -1,11 +1,11 @@
 from django.db import models
 #from djongo import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin,User
 from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
 from rest_framework_simplejwt.tokens import RefreshToken
 from datetime import datetime
-
+from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
@@ -58,9 +58,6 @@ class OneTimePassword(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} - otp code"
-
-
-
 
 class Restaurant(models.Model):
     class TypeChoices(models.TextChoices):

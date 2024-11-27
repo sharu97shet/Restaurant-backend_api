@@ -35,7 +35,6 @@ DEBUG = True
 #2Z88YUEQCH0O89CU  A7EBXW8JZ0732V4Q
 ALLOWED_HOSTS = ['127.0.0.1','.vercel.app', 'onrender.com','localhost']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -117,7 +116,7 @@ CSRF_TRUSTED_ORIGINS = [
 # CSRF_COOKIE_SAMESITE = 'None'
 # CSRF_COOKIE_SECURE = True
 
-
+#"restaurant_sonar_django  "restaurant_sonar_django": sqp_ccb5a467b42bfe73eb18a3b693f4ec3e49771b56"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -172,6 +171,13 @@ SOCIAL_AUTH_PASSWORD=os.environ.get('socialauthpassword')
 GITHUB_CLIENT_ID=os.environ.get('githubclientid')
 GITHUB_CLIENT_SECRET=os.environ.get('githubclientsecret')
 
+# settings.py
+
+# Broker URL (use Redis as a broker)
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # assuming you are using Redis
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -190,6 +196,25 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'INFO',  # Set to 'DEBUG' if you want more detailed logs
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Set to 'DEBUG' for more details
+        },
+    },
+}
 
 
 # Internationalization

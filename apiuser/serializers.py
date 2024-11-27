@@ -80,12 +80,17 @@ class OtpSerializer(serializers.ModelSerializer):
         model = Restaurant
         fields = ['id', 'otp', 'user']  
 
+class RatingSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Rating
+        fields = '__all__'
 
 class RestaurantSerializer(serializers.ModelSerializer):
+    ratings=RatingSerializer(many=True)
     class Meta:
         model = Restaurant
-        fields = ['id', 'name', 'website','date_opened','restaurant_type']  
-
+        fields = '__all__'
 
 
 class LoginSerializer(serializers.ModelSerializer):

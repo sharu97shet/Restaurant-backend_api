@@ -1,4 +1,4 @@
-from django.shortcuts import render , HttpResponse
+from django.shortcuts import render , HttpResponse, redirect
 from django.utils import timezone
 from django.db.models import Q , Case ,When 
 from django.db.models.functions import Lower,Upper,Length, Concat
@@ -19,6 +19,12 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from itertools import chain
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
+import logging
+from django.http import JsonResponse
+
+logger = logging.getLogger('django')
 # Create your views here.
 def home(request):
     return HttpResponse("jwt")
@@ -154,9 +160,9 @@ class Restaurnat(APIView):
     # serializer_class = 
     permission_classes=[IsAuthenticated]
 
-   
-
+    @method_decorator(ratelimit(key='user', rate='5/d', method='GET', block=True))
     def get(self, request):
+        logger.info("Restaurnat Endpoint  was hit")
         rest=Restaurant.objects.first()
         serializer = RestaurantSerializer(Restaurant.objects.all(), many=True)
         #serializerobject = RestaurantSerializer(rest, many=True)
@@ -164,6 +170,7 @@ class Restaurnat(APIView):
             'status': 'request was permitted',
             'data':  serializer.data
         }
+        # logger.info("Restaurnat Endpoint  response  "{serializer.data})
         return Response(content)
     
 
@@ -324,9 +331,6 @@ def addtwono(request):
     
 
 from apiuser.userdetails import userBio
-import logging
-
-logger = logging.getLogger(__name__)
 
 def refmodule(request):
     user=request.user
