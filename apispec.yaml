@@ -1,0 +1,542 @@
+openapi: 3.0.3
+info:
+  title: My Restaurant App API
+  version: 1.0.0
+  description: API documentation for my project.
+paths:
+  /api/login/:
+    post:
+      operationId: api_login_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/logout/:
+    post:
+      operationId: api_logout_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LogoutUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LogoutUser'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutUser'
+          description: ''
+  /api/near-rest:
+    get:
+      operationId: api_near_rest_retrieve
+      description: |-
+        this method gets the lat and lon details of login user and from the
+        user profile model we fetch data and pass to google location api
+        to get json data.
+        Then it is passed to LLM model
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/password-reset/:
+    post:
+      operationId: api_password_reset_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetRequest'
+          description: ''
+  /api/password-reset-confirm/{uidb64}/{token}/:
+    get:
+      operationId: api_password_reset_confirm_retrieve
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/register/:
+    post:
+      operationId: api_register_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegister'
+          description: ''
+  /api/restaurant/:
+    get:
+      operationId: api_restaurant_retrieve
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/set-new-password/:
+    patch:
+      operationId: api_set_new_password_partial_update
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNewPassword'
+          description: ''
+  /api/token/:
+    post:
+      operationId: api_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: api_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/twono/:
+    get:
+      operationId: api_twono_retrieve
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_twono_create
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/userdata/:
+    get:
+      operationId: api_userdata_list
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRegister'
+          description: ''
+  /api/verify-email/:
+    post:
+      operationId: api_verify_email_create
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /socialapi/github/:
+    post:
+      operationId: socialapi_github_create
+      tags:
+      - socialapi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GithubLogin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GithubLogin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GithubLogin'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubLogin'
+          description: ''
+  /socialapi/google/:
+    post:
+      operationId: socialapi_google_create
+      tags:
+      - socialapi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleSignIn'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleSignIn'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoogleSignIn'
+        required: true
+      security:
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleSignIn'
+          description: ''
+components:
+  schemas:
+    GithubLogin:
+      type: object
+      properties:
+        code:
+          type: string
+      required:
+      - code
+    GoogleSignIn:
+      type: object
+      properties:
+        access_token:
+          type: string
+          minLength: 6
+      required:
+      - access_token
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 155
+          minLength: 6
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 68
+        full_name:
+          type: string
+          readOnly: true
+          maxLength: 255
+        access_token:
+          type: string
+          readOnly: true
+          maxLength: 255
+        refresh_token:
+          type: string
+          readOnly: true
+          maxLength: 255
+      required:
+      - access_token
+      - email
+      - full_name
+      - password
+      - refresh_token
+    LogoutUser:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+      required:
+      - refresh_token
+    PasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+      required:
+      - email
+    PatchedSetNewPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        confirm_password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        uidb64:
+          type: string
+          writeOnly: true
+          minLength: 1
+        token:
+          type: string
+          writeOnly: true
+          minLength: 3
+    SetNewPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        confirm_password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        uidb64:
+          type: string
+          writeOnly: true
+          minLength: 1
+        token:
+          type: string
+          writeOnly: true
+          minLength: 3
+      required:
+      - confirm_password
+      - password
+      - token
+      - uidb64
+    TokenObtainPair:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - email
+      - password
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    UserRegister:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email Address
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 100
+        last_name:
+          type: string
+          maxLength: 100
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 68
+          minLength: 6
+        password2:
+          type: string
+          writeOnly: true
+          maxLength: 68
+          minLength: 6
+        birth_day:
+          type: string
+          format: date
+      required:
+      - email
+      - first_name
+      - last_name
+      - password
+      - password2
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

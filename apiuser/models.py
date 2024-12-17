@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 
 import uuid
 
+
 AUTH_PROVIDERS ={'email':'email', 'google':'google', 'github':'github', 'linkedin':'linkedin'}
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -58,6 +59,16 @@ class OneTimePassword(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} - otp code"
+    
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.first_name    
 
 class Restaurant(models.Model):
     class TypeChoices(models.TextChoices):
